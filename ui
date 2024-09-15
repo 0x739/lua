@@ -161,4 +161,3 @@ getgenv().ContentSet = function(Content1, Content2)
 	Top.Text = "Auto Farm: "..Content1
 	Under.Text = "Task: "..Content2
 end
-getgenv().ContentSet("gay1", "gay2")
