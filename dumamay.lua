@@ -1,11 +1,45 @@
 local Players = game:GetService("Players")
+local VirtualUser = game:GetService("VirtualUser")
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
+
 local player = Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 
+-- Script anti afk
+Players.LocalPlayer.Idled:Connect(function()
+    VirtualUser:CaptureController()
+    VirtualUser:ClickButton2(Vector2.new())
+end) 
+print("Anti-AFK script activated")
+
+-- Script for setting Transparency to 1
+local function setTransparency()
+    for _, v in next, workspace:GetDescendants() do
+        pcall(function()
+            v.Transparency = 1
+        end)
+    end
+    for _, v in next, getnilinstances() do
+        pcall(function()
+            v.Transparency = 1
+            for _, v1 in next, v:GetDescendants() do
+                v1.Transparency = 1
+            end
+        end)
+    end
+    workspace.DescendantAdded:Connect(function(v)
+        pcall(function()
+            v.Transparency = 1
+        end)
+    end)
+end
+
+-- Initial Transparency setting
+setTransparency()
+
 -- Variable to track if teleportation is enabled
-local teleportEnabled = false
+local teleportEnabled = true
 
 -- Function to find the CoinContainer
 local function findCoinContainer()
@@ -18,67 +52,15 @@ local function findCoinContainer()
     return nil
 end
 
--- Function to find the nearest coin within a certain radius
-local function findNearestCoin(radius)
-    local coinContainer = findCoinContainer()
-    if not coinContainer then
-        print("CoinContainer not found")
-        return nil
-    end
-    local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-    local nearestCoin = nil
-    local nearestDistance = radius
-    for _, coin in pairs(coinContainer:GetChildren()) do
-        local distance = (coin.Position - humanoidRootPart.Position).Magnitude
-        if distance < nearestDistance then
-            nearestCoin = coin
-            nearestDistance = distance
+-- Function to count the number of CoinContainers
+local function countCoinContainers()
+    local count = 0
+    for _, child in pairs(workspace:GetChildren()) do
+        if child:IsA("Model") and child:FindFirstChild("CoinContainer") then
+            count = count + #child.CoinContainer:GetChildren()
         end
     end
-    return nearestCoin
-end
-
--- Function to teleport to a coin
-local function teleportToCoin(coin)
-    local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-    local tweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-    local tween = TweenService:Create(humanoidRootPart, tweenInfo, {CFrame = coin.CFrame})
-    tween:Play()
-    return tween
-end
-
--- Variable to track if a teleport is in progress
-local isTeleporting = false
-
--- Function to teleport to a nearby coin or a random coin
-local function teleportToNearbyOrRandomCoin()
-    if not teleportEnabled or isTeleporting then return end
-    local nearbyRadius = 50 -- Adjust this value to change the "nearby" distance
-    local nearbyCoin = findNearestCoin(nearbyRadius)
-    if nearbyCoin then
-        print("Teleporting to nearby coin")
-        isTeleporting = true
-        local tween = teleportToCoin(nearbyCoin)
-        tween.Completed:Wait()
-        isTeleporting = false
-    else
-        local coinContainer = findCoinContainer()
-        if not coinContainer then
-            print("CoinContainer not found")
-            return
-        end
-        local coins = coinContainer:GetChildren()
-        if #coins == 0 then
-            print("No coins found")
-            return
-        end
-        local randomCoin = coins[math.random(1, #coins)]
-        print("Teleporting to random coin")
-        isTeleporting = true
-        local tween = teleportToCoin(randomCoin)
-        tween.Completed:Wait()
-        isTeleporting = false
-    end
+    return count
 end
 
 -- Function to create GUI
@@ -89,14 +71,11 @@ local function createGUI()
     ScreenGui.Parent = player.PlayerGui
 
     local Frame = Instance.new("Frame")
-    Frame.Size = UDim2.new(0, 200, 0, 100)
-    Frame.Position = UDim2.new(0.5, -100, 0.5, -50)
-    Frame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    Frame.Size = UDim2.new(0, 300, 0, 100)
+    Frame.Position = UDim2.new(0.5, -150, 0.5, -50)
+    Frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Black background
     Frame.BorderSizePixel = 0
     Frame.Parent = ScreenGui
-    Frame.Active = true
-    Frame.Draggable = true
-    Frame.Selectable = true
 
     local Title = Instance.new("TextLabel")
     Title.Size = UDim2.new(1, 0, 0, 30)
@@ -107,54 +86,106 @@ local function createGUI()
     Title.Font = Enum.Font.SourceSansBold
     Title.Parent = Frame
 
-    local ToggleButton = Instance.new("TextButton")
-    ToggleButton.Size = UDim2.new(0.8, 0, 0, 40)
-    ToggleButton.Position = UDim2.new(0.1, 0, 0.5, 0)
-    ToggleButton.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
-    ToggleButton.Text = "Teleport OFF"
-    ToggleButton.TextColor3 = Color3.new(1, 1, 1)
-    ToggleButton.TextSize = 14
-    ToggleButton.Font = Enum.Font.SourceSansBold
-    ToggleButton.Parent = Frame
+    local CandyLabel = Instance.new("TextLabel")
+    CandyLabel.Size = UDim2.new(1, 0, 0, 30)
+    CandyLabel.Position = UDim2.new(0, 0, 0.5, 0)
+    CandyLabel.BackgroundTransparency = 1
+    CandyLabel.TextColor3 = Color3.new(1, 1, 1)
+    CandyLabel.TextSize = 16
+    CandyLabel.Font = Enum.Font.SourceSans
+    CandyLabel.Parent = Frame
 
-    -- Function to toggle teleportation
-    local function toggleTeleport()
-        teleportEnabled = not teleportEnabled
-        if teleportEnabled then
-            ToggleButton.Text = "Teleport ON"
-            ToggleButton.BackgroundColor3 = Color3.fromRGB(0, 200, 0)
+    -- Update CandyLabel text with the number of CoinContainers
+    local function updateCandyCount()
+        local count = countCoinContainers()
+        CandyLabel.Text = "You have: " .. count .. " Candies"
+    end
+
+    -- Update CandyLabel initially
+    updateCandyCount()
+
+    -- Variable to track if a teleport is in progress
+    local isTeleporting = false
+
+    -- Function to find the nearest coin within a certain radius
+    local function findNearestCoin(radius)
+        local coinContainer = findCoinContainer()
+        if not coinContainer then
+            print("CoinContainer not found")
+            return nil
+        end
+        local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+        local nearestCoin = nil
+        local nearestDistance = radius
+        for _, coin in pairs(coinContainer:GetChildren()) do
+            local distance = (coin.Position - humanoidRootPart.Position).Magnitude
+            if distance < nearestDistance then
+                nearestCoin = coin
+                nearestDistance = distance
+            end
+        end
+        return nearestCoin
+    end
+
+    -- Function to teleport to a coin
+    local function teleportToCoin(coin)
+        local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+        local tweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+        local tween = TweenService:Create(humanoidRootPart, tweenInfo, {CFrame = coin.CFrame})
+        tween:Play()
+        return tween
+    end
+
+    -- Function to teleport to a nearby coin or a random coin
+    local function teleportToNearbyOrRandomCoin()
+        if not teleportEnabled or isTeleporting then return end
+        local nearbyRadius = 50 -- Adjust this value to change the "nearby" distance
+        local nearbyCoin = findNearestCoin(nearbyRadius)
+        if nearbyCoin then
+            print("Teleporting to nearby coin")
+            isTeleporting = true
+            local tween = teleportToCoin(nearbyCoin)
+            tween.Completed:Wait()
+            isTeleporting = false
         else
-            ToggleButton.Text = "Teleport OFF"
-            ToggleButton.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+            local coinContainer = findCoinContainer()
+            if not coinContainer then
+                print("CoinContainer not found")
+                return
+            end
+            local coins = coinContainer:GetChildren()
+            if #coins == 0 then
+                print("No coins found")
+                return
+            end
+            local randomCoin = coins[math.random(1, #coins)]
+            print("Teleporting to random coin")
+            isTeleporting = true
+            local tween = teleportToCoin(randomCoin)
+            tween.Completed:Wait()
+            isTeleporting = false
         end
     end
 
-    -- Connect the toggle button
-    ToggleButton.MouseButton1Click:Connect(toggleTeleport)
+    -- Function to handle character spawning
+    local function onCharacterAdded(newCharacter)
+        character = newCharacter
+        updateCandyCount() -- Update count when character spawns
+    end
 
-    return ScreenGui
-end
+    -- Connect to current and future characters
+    player.CharacterAdded:Connect(onCharacterAdded)
+
+    -- Start the continuous teleportation loop
+    RunService.Heartbeat:Connect(function()
+        if teleportEnabled and character and character:FindFirstChild("HumanoidRootPart") then
+            teleportToNearbyOrRandomCoin()
+            updateCandyCount() -- Update the candy count
+        end
+    end)
+end 
 
 -- Create initial GUI
-local gui = createGUI()
+createGUI()
 
--- Function to handle character spawning
-local function onCharacterAdded(newCharacter)
-    character = newCharacter
-    -- Check if GUI exists, if not, recreate it
-    if not player.PlayerGui:FindFirstChild("MM2CandyAutoFarmGUI") then
-        gui = createGUI()
-    end
-end
-
--- Connect to current and future characters
-player.CharacterAdded:Connect(onCharacterAdded)
-
--- Start the continuous teleportation loop
-RunService.Heartbeat:Connect(function()
-    if teleportEnabled and character and character:FindFirstChild("HumanoidRootPart") then
-        teleportToNearbyOrRandomCoin()
-    end
-end)
-
-print("MM2 Candy Auto Farm script with persistent GUI and fixed toggle loaded.")
+print("MM2 Candy Auto Farm script with persistent GUI, fixed toggle, and transparency setting loaded.")
