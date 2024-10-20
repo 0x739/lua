@@ -5,7 +5,7 @@ local player = Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 
 -- Variable to track if teleportation is enabled
-local teleportEnabled = true
+local teleportEnabled = false
 
 -- Function to find the CoinContainer
 local function findCoinContainer()
@@ -48,7 +48,7 @@ local function teleportToCoin(coin)
 end
 
 -- Variable to track if a teleport is in progress
-local isTeleporting = true
+local isTeleporting = false
 
 -- Function to teleport to a nearby coin or a random coin
 local function teleportToNearbyOrRandomCoin()
@@ -101,7 +101,7 @@ local function createGUI()
     local Title = Instance.new("TextLabel")
     Title.Size = UDim2.new(1, 0, 0, 30)
     Title.BackgroundTransparency = 1
-    Title.Text = "Auto Farm"
+    Title.Text = "MM2 Candy Auto Farm"
     Title.TextColor3 = Color3.new(1, 1, 1)
     Title.TextSize = 18
     Title.Font = Enum.Font.SourceSansBold
@@ -117,6 +117,7 @@ local function createGUI()
     ToggleButton.Font = Enum.Font.SourceSansBold
     ToggleButton.Parent = Frame
 
+    -- Function to toggle teleportation
     local function toggleTeleport()
         teleportEnabled = not teleportEnabled
         if teleportEnabled then
@@ -134,21 +135,26 @@ local function createGUI()
     return ScreenGui
 end
 
+-- Create initial GUI
 local gui = createGUI()
 
+-- Function to handle character spawning
 local function onCharacterAdded(newCharacter)
     character = newCharacter
+    -- Check if GUI exists, if not, recreate it
     if not player.PlayerGui:FindFirstChild("MM2CandyAutoFarmGUI") then
         gui = createGUI()
     end
 end
 
+-- Connect to current and future characters
 player.CharacterAdded:Connect(onCharacterAdded)
 
+-- Start the continuous teleportation loop
 RunService.Heartbeat:Connect(function()
     if teleportEnabled and character and character:FindFirstChild("HumanoidRootPart") then
         teleportToNearbyOrRandomCoin()
     end
 end)
 
-print("Script loaded")
+print("MM2 Candy Auto Farm script with persistent GUI and fixed toggle loaded.")
