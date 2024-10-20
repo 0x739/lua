@@ -318,24 +318,17 @@ end)
 
 print("MM2 Candy Auto Farm script with persistent GUI and fixed toggle loaded.")
 
+local lastJumpTime = 0
 
-
-local lastJumpTime = 0-- Hàm để kiểm tra và thực hiện nhảylocal function checkAndJump()
-
+local function checkAndJump()
     local currentTime = tick()
-
-    if currentTime - lastJumpTime >= 60 then -- 60 giây = 1 phút
-
+    if currentTime - lastJumpTime >= 60 then 
         local humanoid = character:FindFirstChild("Humanoid")
-
         if humanoid then
-
             humanoid:Jump()
-
             lastJumpTime = currentTime
-
         end
-
-    endend-- Thêm hàm kiểm tra và nhảy vào vòng lặp Heartbeat
+    end
+end
 
 RunService.Heartbeat:Connect(checkAndJump)
