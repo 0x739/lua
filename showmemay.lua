@@ -44,7 +44,7 @@ spawn(function()
 end) 
 
 NameHub.TextColor3 = Color3.fromRGB(255, 255, 255) -- Chữ trắng
-NameHub.TextSize = 85 * 2
+NameHub.TextSize = 85 * 4
 NameHub.AnchorPoint = Vector2.new(0.5, 0.5)
 NameHub.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Nền đen
 NameHub.BackgroundTransparency = 0.9990000128746033
@@ -62,7 +62,7 @@ UIStroke.Parent = NameHub
 HopIn.Font = Enum.Font.Gotham
 HopIn.Text = "Candies"
 HopIn.TextColor3 = Color3.fromRGB(255, 255, 255) -- Chữ trắng
-HopIn.TextSize = 40
+HopIn.TextSize = 80
 HopIn.AnchorPoint = Vector2.new(0.5, 0.5)
 HopIn.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Nền đen
 HopIn.BackgroundTransparency = 0.9990000128746033
