@@ -6,7 +6,7 @@ Candies = Gui.CrossPlatform.Halloween2024.Container.EventFrames.BattlePass.Info.
 print("Candies: ", Candies.Text)
 
 function RefreshCandy() 
-    NameHub.Text = tostring(game.Players.LocalPlayer.PlayerGui.CrossPlatform.Halloween2024.Container.EventFrames.BattlePass.Info.Tokens.Container.TextLabel.Text)
+    NameHub.Text = tostring(game.Players.LocalPlayer.PlayerGui.CrossPlatform.Halloween2024.Container.EventFrames.BattlePass.Info.Tokens.Container.TextLabel .Text)
 end 
 Candies:GetPropertyChangedSignal("Text"):Connect(RefreshCandy)
 
@@ -27,7 +27,7 @@ HopGui.Parent = game:GetService("CoreGui")
 HopGui.Enabled = true
 
 HopFrame.AnchorPoint = Vector2.new(0.5, 0.5)
-HopFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Nền đen
+HopFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 HopFrame.BackgroundTransparency = 0.9990000128746033
 HopFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 HopFrame.BorderSizePixel = 0
@@ -43,10 +43,10 @@ spawn(function()
     end 
 end) 
 
-NameHub.TextColor3 = Color3.fromRGB(255, 255, 255) -- Chữ trắng
-NameHub.TextSize = 85 * 4
+NameHub.TextColor3 = Color3.fromRGB(175.00000476837158, 187.00000405311584, 230.00000149011612)
+NameHub.TextSize = 85*2
 NameHub.AnchorPoint = Vector2.new(0.5, 0.5)
-NameHub.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Nền đen
+NameHub.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 NameHub.BackgroundTransparency = 0.9990000128746033
 NameHub.BorderColor3 = Color3.fromRGB(0, 0, 0)
 NameHub.BorderSizePixel = 0
@@ -55,16 +55,16 @@ NameHub.Size = UDim2.new(0, 400, 0, 160)
 NameHub.Name = "NameHub"
 NameHub.Parent = HopFrame
 
-UIStroke.Color = Color3.fromRGB(255, 255, 255) -- Đường viền trắng
+UIStroke.Color = Color3.fromRGB(175.00000476837158, 187.00000405311584, 230.00000149011612)
 UIStroke.Thickness = 1.5
 UIStroke.Parent = NameHub
 
 HopIn.Font = Enum.Font.Gotham
 HopIn.Text = "Candies"
-HopIn.TextColor3 = Color3.fromRGB(255, 255, 255) -- Chữ trắng
+HopIn.TextColor3 = Color3.fromRGB(255, 255, 255)
 HopIn.TextSize = 40
 HopIn.AnchorPoint = Vector2.new(0.5, 0.5)
-HopIn.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Nền đen
+HopIn.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 HopIn.BackgroundTransparency = 0.9990000128746033
 HopIn.BorderColor3 = Color3.fromRGB(0, 0, 0)
 HopIn.BorderSizePixel = 0
@@ -86,14 +86,13 @@ DropShadow.ImageTransparency = 0.999
 DropShadow.ScaleType = Enum.ScaleType.Slice
 DropShadow.SliceCenter = Rect.new(49, 49, 450, 450)
 DropShadow.AnchorPoint = Vector2.new(0.5, 0.5)
-DropShadow.BackgroundTransparency = 0
+DropShadow.BackgroundTransparency = 1
 DropShadow.BorderSizePixel = 0
 DropShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
 DropShadow.Size = UDim2.new(1, 47, 1, 47)
 DropShadow.ZIndex = 0
 DropShadow.Name = "DropShadow"
 DropShadow.Parent = DropShadowHolder
-
 local Blur = Instance.new("BlurEffect")
 Blur.Size = 100
 Blur.Parent = game.Lighting
