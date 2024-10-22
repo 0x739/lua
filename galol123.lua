@@ -44,14 +44,14 @@ spawn(function()
 end) 
 
 NameHub.TextColor3 = Color3.fromRGB(255, 255, 255) -- Màu chữ trắng
-NameHub.TextSize = 170 -- Kích thước chữ lớn hơn
+NameHub.TextSize = 120 -- Giảm kích thước để không bị cắt mất
 NameHub.AnchorPoint = Vector2.new(0.5, 0.5)
 NameHub.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Nền đen
 NameHub.BackgroundTransparency = 0 -- Không trong suốt
 NameHub.BorderColor3 = Color3.fromRGB(0, 0, 0)
 NameHub.BorderSizePixel = 0
 NameHub.Position = UDim2.new(0.5, 0, 0.5, -45)
-NameHub.Size = UDim2.new(0, 600, 0, 260) -- Tăng kích thước
+NameHub.Size = UDim2.new(0, 600, 0, 180) -- Điều chỉnh kích thước cho phù hợp với kích thước chữ
 NameHub.Name = "NameHub"
 NameHub.Parent = HopFrame
 
@@ -62,7 +62,7 @@ UIStroke.Parent = NameHub
 HopIn.Font = Enum.Font.Gotham
 HopIn.Text = "Candies"
 HopIn.TextColor3 = Color3.fromRGB(255, 255, 255) -- Màu chữ trắng
-HopIn.TextSize = 60 -- Kích thước chữ lớn hơn
+HopIn.TextSize = 60 -- Kích thước chữ hợp lý
 HopIn.AnchorPoint = Vector2.new(0.5, 0.5)
 HopIn.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Nền đen
 HopIn.BackgroundTransparency = 0 -- Không trong suốt
@@ -98,3 +98,4 @@ local Blur = Instance.new("BlurEffect")
 Blur.Size = 100
 Blur.Parent = game.Lighting
 Blur.Enabled = true
+--ngu
