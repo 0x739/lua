@@ -27,9 +27,3 @@ Players.PlayerAdded:Connect(function(player)
         end
     end)
 end)
-
-task.spawn(function()
-    while task.wait(300) do
-        ChatEvent:FireServer("add friend pls", "kb với tui đi", "All")
-    end
-end)
