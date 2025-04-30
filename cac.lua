@@ -17,18 +17,16 @@ getgenv().UserConfig = {
     },
 
     ["Alien Shop"] = {
-        Enable = true,
-        ["Min Gems"] = "20m",
+        Enable = false,
+        ["Min Gems"] = "1m",
         ["Items Needed"] = {
-            "Golden Key",
-            "Mystery Box",
-            "Lucky III",
-            "Lucky IV"
+            "Lucky IV",
+            "Speed IV"
         }
     },
     ["Black Market"] = {
         Enable = true,
-        ["Min Gems"] = "1m",
+        ["Min Gems"] = "4m",
         ["Items Needed"] = {
             "Lucky Evolved",
             "Mythic Evolved",
@@ -37,10 +35,9 @@ getgenv().UserConfig = {
     },
 
     ["Craft Potions"] = {
-        Enable = true,
+        Enable = false,
         MinGems = 20000,
         ["Potion Needed"] = {
-            {"Coins", Level = 5},
             {"Speed", Level = 5},
             {"Lucky", Level = 5},
             {"Mythic", Level = 5}
@@ -49,7 +46,7 @@ getgenv().UserConfig = {
 
     ["Mastery"] = {
         Pets = 15,
-        Buffs = 18,
+        Buffs = 15,
         Shops = 10
     },
 
@@ -70,13 +67,13 @@ getgenv().UserConfig = {
     ["Rifts"] = {
         AlwaysFindRifts = true,
         Targets = {"Silly Egg", "Throwback Egg", "Nightmare Egg"},
-        Luck = 5
+        Luck = 10
     },
-    ["Min gems"] = "5m", -- Farm min gems trước khi hatch FindDuck
+    ["Min gems"] = "5m",
     FindDuck = "100M Egg", -- Hatch 1x Egg
-    ["Enchant Team 1"] = {enable = true, ["high-roller"] = 1}, 
-    ["Gems coefficient"] = 24, -- Tìm pets >= tổng hệ số gems thì đi lên Zen farm Mastery và hatch Rainbow
-    ["Replace 100M Egg"] = "Throwback Egg", -- Server không có 100M Egg thì chuyển qua đây hatch dự phòng
+    ["Enchant Team 1"] = {enable = true, ["team-up"] = 3},
+    ["Gems coefficient"] = 24,
+    ["Replace 100M Egg"] = "Throwback Egg",
     ["Auto Restart"] = true,
 
     ["Webhook"] = {
